@@ -1,0 +1,38 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center; padding-top: 50px;">
+			LOGO<BR>
+				BOOKSPLICE		
+		</div>
+	
+	</div>
+	<div class="row">
+	
+		<div class="col-md-12" style="text-align: center;">
+			<div class="input-group add-on" style="text-align: center;">
+		      <input class="form-control" placeholder="Input a book title here" name="srch-term" id="booksearch" type="text">
+		      <div class="input-group-btn">
+		        <button class="btn btn-default" type="submit" id="submit-btn"><i class="glyphicon glyphicon-search"></i></button>
+		      </div>
+		    </div>
+		</div>
+	</div>
+	
+	<div class="row" style="text-align: center;">
+		<div class="col-md-12">
+			
+		</div>
+		
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/website/javascript/index.js"></script>
+{% endblock %}
