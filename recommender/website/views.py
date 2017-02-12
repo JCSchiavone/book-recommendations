@@ -19,6 +19,8 @@ def bookrec(request):
     book = Book.objects.get(book_id=data)
     
     tags = Shelves.objects.filter(book_id=data).order_by('-people')
+    if len(tags) > 30:
+        tags = tags[0:30]
     cats = Categories.objects.filter(book_id=data)
     
     return {'book': book,
@@ -35,11 +37,11 @@ def check_tags(request):
     
     for tag in tags:
         res.append({'tag': tag.shelf})
+            
     for cat in cats:
         res.append({'tag': cat.category})
         
-    if res.length > 30:
-        res = res[0:30]
+    
     
     return JsonResponse({'res': res})
 
