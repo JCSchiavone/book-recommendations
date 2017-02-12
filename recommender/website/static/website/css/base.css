@@ -5,6 +5,18 @@
 	padding-bottom: 10px;
 }
 
+#summary {
+	background-color: #eeeeee;
+	padding: 10px;
+	border: 2px solid #eeeeee;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+}
+
+td {
+	padding: 5px;
+}
+
 .info-striped {
 	
 	box-shadow: #000000 0px 0px 0px 3px;

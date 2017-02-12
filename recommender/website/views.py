@@ -45,6 +45,21 @@ def check_tags(request):
     
     return JsonResponse({'res': res})
 
+
+def get_book_info(request):
+    id = request.POST.get('id')
+    book = Book.objects.get(book_id=id)
+    
+    book = {'title': book.book_title,
+            'author': book.book_author,
+            'desc': book.description,
+            'cover': book.cover_url,
+            'id': book.book_id,
+            'pagecount': book.pagecount
+            }
+
+    return JsonResponse({'book': book})
+
 def get_recs(request):
     tags_get = request.POST.get('tags')
     if tags_get:
