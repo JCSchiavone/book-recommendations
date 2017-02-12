@@ -29,6 +29,8 @@ def get_recs(request):
     tags_get = request.POST.get('tags')
     if tags_get:
         tags_get = tags_get.split(',')
+        
+    tags_get = tags_get[0:-1]
     id = request.POST.get('id')
     print tags_get
     print id

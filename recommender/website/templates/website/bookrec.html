@@ -29,7 +29,7 @@
 					<button class="tags flat-butt flat-danger-butt">{{ tag.shelf }}</button>
 				{% endfor %}
 				{% for cat in cats %}
-					<button class="cats flat-butt flat-info-butt"> {{ cat.category }}</button>
+					<button class="cats flat-butt flat-info-butt">{{ cat.category }}</button>
 				{% endfor %}			
 				</div>
 			<div>
@@ -133,7 +133,6 @@
 	$('#submit-btn').click(function(e){
 		search(e);
 	});
-	
 	
 	$('input').bind("enterKey",function(e){
 	   search(e);
