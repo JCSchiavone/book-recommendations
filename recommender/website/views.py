@@ -47,7 +47,7 @@ def get_recs(request):
                                     'id': book.book_id,
                                     'count': 1
                                     }
-    other_cats = Categories.objects.filter(category=tags_get).select_related()
+    other_cats = Categories.objects.filter(category__in=tags_get).select_related()
     for tag in other_cats:
         book = tag.book_id
         if book.book_id != id:
