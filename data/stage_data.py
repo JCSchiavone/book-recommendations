@@ -5,6 +5,8 @@ import sys
 from bs4 import BeautifulSoup
 import urllib
 import sqlite3
+import pickle
+from collections import defaultdict
 
 parser = argparse.ArgumentParser()
 parser.add_argument('database', help='path to sqlite DB containing scraped data.')
@@ -23,6 +25,42 @@ def clean_reviews(reviews):
 		r[1] = r[1].replace('"',"'").replace('\n',' ').replace('\t',' ')
 	return reviews
 
+def clean_shelves(shelves):
+	with open('shelf_mappings.p', 'rb') as f:
+		mappings = pickle.load(f)
+	new_shelves = []
+	for shelf in shelves:
+		if shelf[0] == None:
+			continue
+		shelf_name = shelf[1].lower()
+		if shelf_name in mappings:
+			shelf[1] = mappings[shelf[1]]
+		else:
+			shelf[1] = shelf_name
+		new_shelves.append(shelf)
+	return new_shelves
+
+def update_shelves(shelves):
+	new_shelves = []
+	d = defaultdict(list)
+	old_shelves = {}
+	for shelf in shelves:
+		old_shelves[str(shelf[0])+shelf[1]] = shelf
+	with open('scores.csv', 'rb') as f:
+		for line in f.readlines():
+			row = line.strip().split(",")
+			ukey = str(row[0])+row[1]
+			if ukey in old_shelves:
+				shelf = old_shelves[ukey]
+				shelf.append(row[2])
+				d[ukey].append(shelf)
+	for ukey, shelves in d.items():
+		total = reduce(lambda x, y : x + int(y[2]), shelves, 0)
+		shelf = shelves[0]
+		shelf[2] = total
+		new_shelves.append(shelf)
+	return new_shelves
+
 def get_book_details(books):
 	api_key = 'AIzaSyCkKWtDLiIt-tNfq74lWnxIWfkHPquZbpQ'
 	api_key_2 = 'AIzaSyAfXz4x8dg6V0zWxPzEsYHK5vSVUUA8vag'
@@ -30,7 +68,7 @@ def get_book_details(books):
 	for i, book in enumerate(books):
 		title = book[1]
 		author = book[2]
-		if i == 499:
+		if i == 500:
 			api_key = api_key_2
 		js = requests.get('https://www.googleapis.com/books/v1/volumes?q=inauthor:'+author+'+intitle:'+title+'&key=' + api_key).json()
 		if js['totalItems'] == 0:
@@ -98,6 +136,8 @@ def write_to_files(books, reviews, shelves, categories):
 
 books, reviews, shelves = load_db(args.database)
 reviews = clean_reviews(reviews)
+shelves = clean_shelves(shelves)
+shelves = update_shelves(shelves)
 books, categories = get_book_details(books)
 books = get_book_images(books, reviews)
 write_to_files(books, reviews, shelves, categories)
