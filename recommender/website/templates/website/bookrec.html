@@ -26,10 +26,10 @@
 		<div class="col-md-7">
 			<div style="display: block; position: relative; height: 300px;">
 				{% for tag in tags %}
-					<button class="flat-butt flat-danger-butt">{{ tag.shelf }}</button>
+					<button class="tags flat-butt flat-danger-butt">{{ tag.shelf }}</button>
 				{% endfor %}
 				{% for cat in cats %}
-					<button class="flat-butt flat-info-butt"> {{ cat.category }}</button>
+					<button class="cats flat-butt flat-info-butt"> {{ cat.category }}</button>
 				{% endfor %}			
 				</div>
 			<div>
@@ -45,25 +45,25 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-1 vertical-center">
+		<div class="col-md-1 vertical-center leftarrow">
 			<img src="static/website/images/leftarrow.png" width=80 class="img-responsive center-block">
 		</div>
-		<div class="col-md-2">
-			<img src="https://images.gr-assets.com/books/1473617211l/23602569.jpg" width=150>
+		<div class="col-md-2 rec">
+			
 		</div>
-		<div class="col-md-2">
-			<img src="https://images.gr-assets.com/books/1473617211l/23602569.jpg" width=150>
+		<div class="col-md-2 rec">
+			
 		</div>
-		<div class="col-md-2">
-			<img src="https://images.gr-assets.com/books/1473617211l/23602569.jpg" width=150>
+		<div class="col-md-2 rec">
+			
 		</div>
-		<div class="col-md-2">
-			<img src="https://images.gr-assets.com/books/1473617211l/23602569.jpg" width=150>
+		<div class="col-md-2 rec">
+			
 		</div>
-		<div class="col-md-2">
-			<img src="https://images.gr-assets.com/books/1473617211l/23602569.jpg" width=150>
+		<div class="col-md-2 rec">
+			
 		</div>
-		<div class="col-md-1 vertical-center">
+		<div class="col-md-1 vertical-center rightarrow">
 			<img src="static/website/images/rightarrow.png" width=80 class="img-responsive center-block">
 		</div>
 	</div>
@@ -76,6 +76,52 @@
 {% block scripts %}
 
 <script>
+
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+	    function(m,key,value) {
+	      vars[key] = value;
+	    });
+	    return vars;
+	  }
+
+	var reloadRecs = function() {
+		
+		
+		var tagstr = '';
+		$('.selected').each(function(i) {
+			tagstr += $(this).text() + ',';
+		});
+		
+		var id = getUrlVars()["id"];
+		
+		
+		data = {'tags': tagstr,
+				'id': id,
+				'csrfmiddlewaretoken': '{{ csrf_token }}'};
+		
+		$.ajax({
+			type: 'POST',
+			url: '/get_recs',
+			data: data,
+			success: function(res) {
+				console.log(res);
+				$('.rec').each( function (i) {
+					if (i < res.res.length) {
+						$(this).html('<b>' + res.res[i].title + '</b><BR>' + res.res[i].author + '<BR><img src="' + res.res[i].cover + '" width=150>');
+					} else {
+						$(this).html('');
+					}
+				});
+				
+			},
+			error: function(res) {
+				console.log(res);
+			}
+		});
+		
+	};
 	
 	var search = function(e) {
 		var book = $('#booksearch').val();
@@ -97,6 +143,34 @@
 	    {
 	        $(this).trigger("enterKey");
 	    }
+	});
+	
+	$('.tags').click(function(e) {
+		var tag = $(this).text();
+		if (!$(this).hasClass('selected')) {
+			$(this).removeClass('flat-danger-butt');
+			$(this).addClass('flat-danger-butt-dark');
+			$(this).addClass('selected');
+		} else {
+			$(this).addClass('flat-danger-butt');
+			$(this).removeClass('flat-danger-butt-dark');
+			$(this).removeClass('selected');
+		}
+		reloadRecs();
+	});
+	
+	$('.cats').click(function(e) {
+		var tag = $(this).text();
+		if (!$(this).hasClass('selected')) {
+			$(this).removeClass('flat-info-butt');
+			$(this).addClass('flat-info-butt-dark');
+			$(this).addClass('selected');
+		} else {
+			$(this).addClass('flat-info-butt');
+			$(this).removeClass('flat-info-butt-dark');
+			$(this).removeClass('selected');
+		}
+		reloadRecs();
 	});
 	
 	

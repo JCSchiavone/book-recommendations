@@ -25,6 +25,49 @@ def bookrec(request):
             'tags': tags,
             'cats': cats}
 
+def get_recs(request):
+    tags_get = request.POST.get('tags')
+    if tags_get:
+        tags_get = tags_get.split(',')
+    id = request.POST.get('id')
+    print tags_get
+    print id
+    other_tags = Shelves.objects.filter(shelf__in=tags_get).select_related()
+    res = {}
+    for tag in other_tags:
+        if tag:
+            book = tag.book_id
+            if book.book_id != id:
+                if book.book_id in res:
+                    res[book.book_id]['count'] += 1
+                else:
+                    res[book.book_id] = {'title': book.book_title,
+                                    'author': book.book_author,
+                                    'cover': book.cover_url,
+                                    'id': book.book_id,
+                                    'count': 1
+                                    }
+    other_cats = Categories.objects.filter(category=tags_get).select_related()
+    for tag in other_cats:
+        book = tag.book_id
+        if book.book_id != id:
+            if book.book_id in res:
+                res[book.book_id]['count'] += 1
+            else:
+                res[book.book_id] = {'title': book.book_title,
+                                'author': book.book_author,
+                                'cover': book.cover_url,
+                                'id': book.book_id,
+                                'count': 1
+                                }
+    json_res = []
+    for item, val in sorted(res.items(), key=lambda x: x[1]['count'], reverse=True):
+        json_res.append(val)
+    
+    
+    return JsonResponse({'res': json_res})
+    
+
 def search_title(request):
     data = request.POST.get('title')
     res = search(data)

@@ -57,14 +57,27 @@ h3 {
 .flat-primary-butt:hover {
   background: #2fe2bf;
 }
-.flat-info-butt {
+.flat-info-butt-dark {
   background: #3498db;
+}
+.flat-info-butt-dark:hover {
+  background: #3498db;
+}
+.flat-info-butt {
+  background: #5dade2;
 }
 .flat-info-butt:hover {
   background: #5dade2;
 }
-.flat-danger-butt {
+.flat-danger-butt-dark {
   background: #e74c3c;
+}
+.flat-danger-butt-dark:hover {
+  background: #e74c3c;
+}
+
+.flat-danger-butt {
+  background: #ec7063;
 }
 .flat-danger-butt:hover {
   background: #ec7063;
@@ -167,3 +180,7 @@ h3 {
 }
 
 .form-control {width: 20%}
+
+.rec {
+	text-align:center;
+}
