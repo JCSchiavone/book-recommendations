@@ -18,7 +18,7 @@ cur = db.cursor()
 
 def insert_data(filename, command, ints=[], floats=[]):
     cur.execute("delete from {0}".format(command.split()[2]))
-    cur.commit()
+    db.commit()
     data = []
     with open(filename) as f:
         for i, row in enumerate(f.readlines()):
