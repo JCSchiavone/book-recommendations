@@ -5,107 +5,27 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12" style="text-align: center; padding-top: 10px;">
-			<img src="/static/website/images/B-Splice-Logo.png" width=300>	
+			<a href="/"><img src="/static/website/images/B-Splice-Logo.png" width=300>	</a>
 		</div>
 	
 	</div>
 	<div class="row">
+		<div class="col-md-12" style="text-align: center; padding-top: 10px;">
+			
+			
+			BookSplice is a book recommendation tool that opens up the black box, revealing the reasons why it makes its recommendations and allowing you to choose how it recommends you books.
+<BR><BR>
+BookSplice is unique because it uses book reviews as the basis for its recommendations. Readers on websites like Goodreads analyze books' strengths and weaknesses and evaluate the features that make them stand out. We use a curated selection of Goodreads shelves as key features that tie together books, such as genres and topics, and perform sentiment analysis on book reviews in order to determine the features that most impressed reviewers about the book. BookSplice then recommends you books that have similar strengths. The result is a book recommendation tool that allows you to start with a book, choose the features you liked most about that book, and find other books that share those features. Enjoy!
+<BR><BR>
 	
-		<div class="col-md-12" style="text-align: center;">
-			<div class="input-group add-on" style="text-align: center;">
-		      <input class="form-control" placeholder="Search for a book by typing the book title or author here" name="srch-term" id="booksearch" type="text">
-		      <div class="input-group-btn">
-		        <button class="btn btn-default" type="submit" id="submit-btn"><i class="glyphicon glyphicon-search"></i></button>
-		      </div>
-		    </div>
+	BookSplice is created by Xin, Joseph, Kieu, Allison, and Amy.
 		</div>
-	</div>
 	
-	<div id="results">
 		
 	</div>
-	</div>
+	
+	
 
 </div>
 
-{% endblock %}
-
-{% block scripts %}
-<script>
-	
-	
-	function getUrlVars() {
-	    var vars = {};
-	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-	    function(m,key,value) {
-	      vars[key] = value;
-	    });
-	    return vars;
-	  }
-	
-	var booksearch = getUrlVars()["search"];
-	if (booksearch) {
-		$('#booksearch').val(booksearch.replace(/%20/g, " "));
-	}
-	
-	var search = function() {
-		var book = $('#booksearch').val();
-		
-		data = {'title': book,
-				'csrfmiddlewaretoken': '{{ csrf_token }}'};
-		
-		$.ajax({
-			type: 'POST',
-			url: '/search_title',
-			data: data,
-			success: function(res) {
-				console.log(res);
-				if (res.res) {
-					if (res.res.length == 0) {
-						$('#results').text('No results. Try another query!');
-					} else {
-						var str = '';
-						for (var i=0; i < res.res.length; i++) {
-							if ( i % 4 == 0) {
-								if (i != 0) {
-									str += '</div>';
-								}
-								str += '<div class="row" style="text-align: center;">';
-							}
-							var book = res.res[i];
-							str += '<div class="col-md-2"><a href="/bookrec?id=' + book.id + '"><b>' + book.title + '</b><BR>' + book.author + '<BR><img width=120 src="' + book.cover + '"></a></div>';
-						}
-						$('#results').append(str);
-					}
-				}
-			},
-			error: function(res) {
-				console.log(res);
-			}
-		});
-	};
-	
-	
-	if ($('#booksearch').val() != '') {
-		search();
-	}
-	
-	
-	$('#submit-btn').click(function(e){
-		search();
-	});
-	
-	
-	$('input').bind("enterKey",function(e){
-	   search();
-	});
-	$('input').keyup(function(e){
-	    if(e.keyCode == 13)
-	    {
-	        $(this).trigger("enterKey");
-	    }
-	});
-	
-	
-</script>
 {% endblock %}

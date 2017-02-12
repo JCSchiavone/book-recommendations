@@ -13,6 +13,10 @@ def index(request):
         return {'search': data}
     else:
         return {'search': ''}
+    
+@render_to('website/about.html')
+def about(request):
+    return {}
 
 @render_to('website/bookrec.html')
 def bookrec(request):
