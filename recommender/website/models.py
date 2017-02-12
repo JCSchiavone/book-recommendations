@@ -8,6 +8,7 @@ class Book(models.Model):
     book_publisher = models.CharField(max_length=100)
     description = models.TextField()
     pagecount = models.IntegerField()
+    cover_url = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.book_title
