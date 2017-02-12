@@ -109,11 +109,9 @@
 			
 			$('.selected').each( function (i) {		
 				if ($(this).hasClass('flat-danger-double-butt')) {
-					$(this).addClass('flat-danger-grad-butt');
 					$(this).addClass('flat-danger-butt');
 					$(this).removeClass('danger-striped');
 				} else {
-					$(this).addClass('flat-info-grad-butt');
 					$(this).addClass('flat-info-butt');
 					$(this).removeClass('info-striped');
 				}
@@ -154,11 +152,9 @@
 						for (var i=0; i<res.res.length; i++) {
 							if (button === res.res[i].tag) {
 								if ($(this).hasClass('flat-danger-double-butt')) {
-									$(this).removeClass('flat-danger-grad-butt');
 									$(this).removeClass('flat-danger-butt');
 									$(this).addClass('danger-striped');
 								} else {
-									$(this).removeClass('flat-info-grad-butt');
 									$(this).removeClass('flat-info-butt');
 									$(this).addClass('info-striped');
 								}
