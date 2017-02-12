@@ -1,5 +1,38 @@
 
+.book {
+	display: block;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
 
+.info-striped {
+	background: repeating-linear-gradient(
+	  45deg,
+	  #3498db,
+	  #3498db 10px,
+	  #5dade2 10px,
+	  #5dade2 20px
+	);
+}
+
+.danger-striped {
+	background: repeating-linear-gradient(
+	  45deg,
+	  #e74c3c,
+	  #e74c3c 10px,
+	  #ec7063 10px,
+	  #ec7063 20px
+	);
+}
+
+.book-selected {
+	background-color: #eeeeee;
+}
+
+.book:hover {
+	background-color: #eeeeee;
+	cursor: pointer;
+}
 
 .vertical-center {
   position: relative;
@@ -43,14 +76,13 @@ h3 {
   font-size: 16.5px;
   padding: 8px 16px;
   border: 0;
-  background: #34495E;
   color: #FFF;
   cursor: pointer;
   outline: 0;
 }
-.flat-butt:hover {
+/*.flat-butt:hover {
   background: #005580;
-}
+}*/
 .flat-primary-butt {
   background: #1abc9c;
 }
@@ -66,9 +98,9 @@ h3 {
 .flat-info-butt {
   background: #5dade2;
 }
-.flat-info-butt:hover {
+/*.flat-info-butt:hover {
   background: #5dade2;
-}
+}*/
 .flat-danger-butt-dark {
   background: #e74c3c;
 }
@@ -79,9 +111,9 @@ h3 {
 .flat-danger-butt {
   background: #ec7063;
 }
-.flat-danger-butt:hover {
+/*.flat-danger-butt:hover {
   background: #ec7063;
-}
+}*/
 .flat-border-butt {
   padding: 8px 20px;
   border: 4px solid #2C3E50;
@@ -124,15 +156,15 @@ h3 {
 .flat-info-double-butt {
   box-shadow: #3498db 0px 0px 0px 3px;
 }
-.flat-info-double-butt:hover {
+/*.flat-info-double-butt:hover {
   box-shadow: #5dade2 0px 0px 0px 3px;
-}
+}*/
 .flat-danger-double-butt {
   box-shadow: #e74c3c 0px 0px 0px 3px;
 }
-.flat-danger-double-butt:hover {
+/*.flat-danger-double-butt:hover {
   box-shadow: #ec7063 0px 0px 0px 3px;
-}
+}*/
 .flat-underline-butt {
   text-decoration: underline;
 }

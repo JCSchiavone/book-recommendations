@@ -25,6 +25,21 @@ def bookrec(request):
             'tags': tags,
             'cats': cats}
 
+def check_tags(request):
+    id = request.POST.get('id')
+    
+    tags = Shelves.objects.filter(book_id=id).order_by('-people')
+    cats = Categories.objects.filter(book_id=id)
+    
+    res = []
+    
+    for tag in tags:
+        res.append({'tag': tag.shelf})
+    for cat in cats:
+        res.append({'tag': cat.category})
+    
+    return JsonResponse({'res': res})
+
 def get_recs(request):
     tags_get = request.POST.get('tags')
     if tags_get:
@@ -32,8 +47,9 @@ def get_recs(request):
         
     tags_get = tags_get[0:-1]
     id = request.POST.get('id')
-    print tags_get
-    print id
+    
+    index = int(request.POST.get('index'))
+    
     other_tags = Shelves.objects.filter(shelf__in=tags_get).select_related()
     res = {}
     for tag in other_tags:
@@ -65,9 +81,23 @@ def get_recs(request):
     json_res = []
     for item, val in sorted(res.items(), key=lambda x: x[1]['count'], reverse=True):
         json_res.append(val)
+        
+    moreright = False
+    moreleft = False
+    
+    if len(json_res) < (index + 5):
+        json_res = json_res[index:len(json_res)]
+    else:
+        json_res = json_res[index:index+5]
+        moreright = True
+        
+    if index > 0:
+        moreleft = True
     
     
-    return JsonResponse({'res': json_res})
+    return JsonResponse({'res': json_res,
+                         'moreleft': moreleft,
+                         'moreright': moreright})
     
 
 def search_title(request):

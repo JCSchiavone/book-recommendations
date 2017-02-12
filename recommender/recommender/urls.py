@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from website.views import index, bookrec, search_title, get_recs
+from website.views import index, bookrec, search_title, get_recs, check_tags
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^bookrec$', bookrec, name='bookrec'),
     url(r'^search_title$', search_title, name='search_title'),
     url(r'^get_recs', get_recs, name='get_recs'),
+    url(r'^check_tags', check_tags, name='check_tags'),
     
 ]

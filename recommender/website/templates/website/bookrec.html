@@ -30,7 +30,7 @@
 				{% endfor %}
 				{% for cat in cats %}
 					<button class="cats flat-butt flat-info-butt">{{ cat.category }}</button>
-				{% endfor %}			
+				{% endfor %}
 				</div>
 			<div>
 				<strong>{{ book.book_title }}</strong>
@@ -45,8 +45,8 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-1 vertical-center leftarrow">
-			<img src="static/website/images/leftarrow.png" width=80 class="img-responsive center-block">
+		<div class="col-md-1 vertical-center">
+			<img onclick="indexleft();" src="static/website/images/leftarrow.png" width=80 class="leftarrow img-responsive center-block" style="display: none;">
 		</div>
 		<div class="col-md-2 rec">
 			
@@ -63,8 +63,8 @@
 		<div class="col-md-2 rec">
 			
 		</div>
-		<div class="col-md-1 vertical-center rightarrow">
-			<img src="static/website/images/rightarrow.png" width=80 class="img-responsive center-block">
+		<div class="col-md-1 vertical-center">
+			<img onclick="indexright();" src="static/website/images/rightarrow.png" width=80 class="rightarrow img-responsive center-block" style="display: none;">
 		</div>
 	</div>
 
@@ -77,6 +77,18 @@
 
 <script>
 
+	var index = 0;
+
+	function indexright() {
+		index = index + 5;
+		reloadRecs();
+	}
+	
+	function indexleft() {
+		index = index - 5;
+		reloadRecs();
+	}
+
 	function getUrlVars() {
 	    var vars = {};
 	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
@@ -85,20 +97,92 @@
 	    });
 	    return vars;
 	  }
+	  
+	  var clearSelected = function() {
+		if ($('.book-selected').length > 0) {
+			
+			$('.book-selected').removeClass('book-selected');
+			
+			console.log($('.selected'));
+			
+			$('.selected').each( function (i) {		
+				if ($(this).hasClass('flat-danger-double-butt')) {
+					$(this).addClass('flat-danger-grad-butt');
+					$(this).addClass('flat-danger-butt');
+					$(this).removeClass('danger-striped');
+				} else {
+					$(this).addClass('flat-info-grad-butt');
+					$(this).addClass('flat-info-butt');
+					$(this).removeClass('info-striped');
+				}
+					
+			});
+			
+		}
+	};
+	  
+	var check_tags = function(id) {
+		
+		clearSelected();
+		
+		if (!$('#' + id).hasClass('book-selected')) {
+			
+			
+			$('#' + id).addClass('book-selected');
+		
+			data = {'id': id,
+					'csrfmiddlewaretoken': '{{ csrf_token }}'};
+			
+			$.ajax({
+				type: 'POST',
+				url: '/check_tags',
+				data: data,
+				success: function(res) {
+					$('.selected').each( function (i) {
+						var button = $(this).text();
+						console.log(button);
+						for (var i=0; i<res.res.length; i++) {
+							if (button === res.res[i].tag) {
+								if ($(this).hasClass('flat-danger-double-butt')) {
+									$(this).removeClass('flat-danger-grad-butt');
+									$(this).removeClass('flat-danger-butt');
+									$(this).addClass('danger-striped');
+								} else {
+									$(this).removeClass('flat-info-grad-butt');
+									$(this).removeClass('flat-info-butt');
+									$(this).addClass('info-striped');
+								}
+								
+							}
+						}
+					});
+				},
+				error: function(res) {
+					console.log(res);
+				}
+			});
+			
+			
+		}
+		
+	};
+
+
+	
 
 	var reloadRecs = function() {
 		
-		
+		clearSelected();
+
 		var tagstr = '';
 		$('.selected').each(function(i) {
 			tagstr += $(this).text() + ',';
 		});
 		
 		var id = getUrlVars()["id"];
-		
-		
 		data = {'tags': tagstr,
 				'id': id,
+				'index': index,
 				'csrfmiddlewaretoken': '{{ csrf_token }}'};
 		
 		$.ajax({
@@ -109,11 +193,22 @@
 				console.log(res);
 				$('.rec').each( function (i) {
 					if (i < res.res.length) {
-						$(this).html('<b>' + res.res[i].title + '</b><BR>' + res.res[i].author + '<BR><img src="' + res.res[i].cover + '" width=150>');
+						$(this).html('<div class="book" onclick="check_tags(\'' + res.res[i].id + '\')" id="' + res.res[i].id + '"><b>' + res.res[i].title + '</b><BR>' + res.res[i].author + '<BR><img src="' + res.res[i].cover + '" width=130></div>');
 					} else {
 						$(this).html('');
 					}
 				});
+				
+				if (res.moreleft) {
+					$('.leftarrow').show();
+				} else {
+					$('.leftarrow').hide();
+				}
+				if (res.moreright) {
+					$('.rightarrow').show();
+				} else {
+					$('.rightarrow').hide();
+				}
 				
 			},
 			error: function(res) {
@@ -147,12 +242,16 @@
 	$('.tags').click(function(e) {
 		var tag = $(this).text();
 		if (!$(this).hasClass('selected')) {
-			$(this).removeClass('flat-danger-butt');
-			$(this).addClass('flat-danger-butt-dark');
+			//$(this).removeClass('flat-danger-butt');
+			$(this).addClass('flat-danger-double-butt');
+			$(this).addClass('flat-danger-grad-butt');
+			//$(this).addClass('flat-danger-butt-dark');
 			$(this).addClass('selected');
 		} else {
-			$(this).addClass('flat-danger-butt');
-			$(this).removeClass('flat-danger-butt-dark');
+			//$(this).addClass('flat-danger-butt');
+			$(this).removeClass('flat-danger-double-butt');
+			$(this).removeClass('flat-danger-grad-butt');
+			//$(this).removeClass('flat-danger-butt-dark');
 			$(this).removeClass('selected');
 		}
 		reloadRecs();
@@ -161,12 +260,16 @@
 	$('.cats').click(function(e) {
 		var tag = $(this).text();
 		if (!$(this).hasClass('selected')) {
-			$(this).removeClass('flat-info-butt');
-			$(this).addClass('flat-info-butt-dark');
+			//$(this).removeClass('flat-info-butt');
+			$(this).addClass('flat-info-double-butt');
+			$(this).addClass('flat-info-grad-butt');
+			//$(this).addClass('flat-info-butt-dark');
 			$(this).addClass('selected');
 		} else {
-			$(this).addClass('flat-info-butt');
-			$(this).removeClass('flat-info-butt-dark');
+			//$(this).addClass('flat-info-butt');
+			$(this).removeClass('flat-info-double-butt');
+			$(this).removeClass('flat-info-grad-butt');
+			//$(this).removeClass('flat-info-butt-dark');
 			$(this).removeClass('selected');
 		}
 		reloadRecs();

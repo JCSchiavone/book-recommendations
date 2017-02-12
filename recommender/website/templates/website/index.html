@@ -58,6 +58,7 @@
 								str += '<div class="row" style="text-align: center;">';
 							}
 							var book = res.res[i];
+							var replaced = book.cover.split(' ').join('/');
 							str += '<div class="col-md-2"><a href="/bookrec?id=' + book.id + '"><b>' + book.title + '</b><BR>' + book.author + '<BR><img width=120 src="' + book.cover + '"></a></div>';
 						}
 						$('#results').append(str);
