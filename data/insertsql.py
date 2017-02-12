@@ -30,9 +30,9 @@ def insert_data(filename, command, ints=[], floats=[]):
             row = row.split('\t')
             for i, val in enumerate(row):
                 if i in ints:
-                    row[i] = int(val) if val else None
-                elif i in floats:
                     row[i] = int(float(val)) if val else None
+                elif i in floats:
+                    row[i] = float(val) if val else None
             row = tuple(row)
             data.append(row)
     cur.executemany(command, data)
@@ -42,7 +42,7 @@ if args.books:
     insert_data('books.tsv', "insert into website_book (book_id, book_title, book_author, book_pub_date, book_publisher, description, pagecount, cover_url) values (%s, %s, %s, %s, %s, %s, %s, %s)", ints=[6])
 
 if args.reviews:
-    insert_data('reviews.tsv', 'insert into website_reviews (book_id_id, body, rating, url) values (%s, %s, %s, %s)', floats=[2])
+    insert_data('reviews.tsv', 'insert into website_reviews (book_id_id, body, rating, url) values (%s, %s, %s, %s)', ints=[2])
 
 if args.shelves:
     insert_data('shelves.tsv', 'insert into website_shelves (book_id_id, shelf, people, score) values (%s, %s, %s, %s)', ints=[2], floats=[3])
