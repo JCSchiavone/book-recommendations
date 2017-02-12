@@ -18,6 +18,8 @@ def bookrec(request):
     data = request.GET.get('id')
     book = Book.objects.get(book_id=data)
     
+    book.description = book.description.encode("utf8")
+    
     tags = Shelves.objects.filter(book_id=data).order_by('-people')
     if len(tags) > 30:
         tags = tags[0:30]

@@ -32,13 +32,15 @@
 					<button class="cats flat-butt flat-info-butt">{{ cat.category }}</button>
 				{% endfor %}
 				</div>
-			<div style="overflow-y: scroll; height: 100px; display: block;">
+			<div style="overflow-y: scroll; height: 120px; display: block;">
 				<strong>{{ book.book_title }}</strong>
 				<BR>
 					{{ book.book_author }}
 					<BR>
-				<i>{{ book.description }}</i><BR>
+						
 					Published by {{ book.book_publisher }} on {{ book.book_pub_date }}
+					<BR>
+				<i>{{ book.description }}</i>
 			</div>
 		</div>
 		
