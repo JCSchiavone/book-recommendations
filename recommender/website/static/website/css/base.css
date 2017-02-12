@@ -1,9 +1,12 @@
 
 html, body, div {
 	font-family: 'Sahitya', serif;
-	font-size: 15px;
+	font-size: 16px;
 }
 
+.btn {
+	
+}
 
 .book {
 	display: block;
