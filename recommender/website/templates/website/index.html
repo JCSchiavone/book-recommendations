@@ -44,7 +44,9 @@
 	  }
 	
 	var booksearch = getUrlVars()["search"];
-	$('#booksearch').val(booksearch.replace(/%20/g, " "));
+	if (booksearch) {
+		$('#booksearch').val(booksearch.replace(/%20/g, " "));
+	}
 	
 	var search = function() {
 		var book = $('#booksearch').val();
