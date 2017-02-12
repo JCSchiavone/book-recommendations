@@ -171,7 +171,7 @@
 					str += book.title;
 					str += '</b><br>';
 					str += book.author;
-					str += '<div style="display: block; height:100px; overflow-y: scroll"><i>';
+					str += '<div style="display: block; height:80px; overflow-y: scroll"><i>';
 					str += book.desc;
 					
 					str += '</i></div></td></tr></table>';
@@ -278,7 +278,7 @@
 	
 	var search = function(e) {
 		var book = $('#booksearch').val();
-		window.location.replace('/?search=' + book);
+		window.location.href = '/?search=' + book;
 	};
 	
 	

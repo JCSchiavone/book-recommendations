@@ -13,7 +13,7 @@
 	
 		<div class="col-md-12" style="text-align: center;">
 			<div class="input-group add-on" style="text-align: center;">
-		      <input class="form-control" placeholder="Search for a book by typing the book title or author here" name="srch-term" id="booksearch" type="text" value={{ search }}>
+		      <input class="form-control" placeholder="Search for a book by typing the book title or author here" name="srch-term" id="booksearch" type="text">
 		      <div class="input-group-btn">
 		        <button class="btn btn-default" type="submit" id="submit-btn"><i class="glyphicon glyphicon-search"></i></button>
 		      </div>
@@ -32,6 +32,19 @@
 
 {% block scripts %}
 <script>
+	
+	
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+	    function(m,key,value) {
+	      vars[key] = value;
+	    });
+	    return vars;
+	  }
+	
+	var booksearch = getUrlVars()["search"];
+	$('#booksearch').val(booksearch.replace(/%20/g, " "));
 	
 	var search = function() {
 		var book = $('#booksearch').val();
@@ -58,7 +71,6 @@
 								str += '<div class="row" style="text-align: center;">';
 							}
 							var book = res.res[i];
-							var replaced = book.cover.split(' ').join('/');
 							str += '<div class="col-md-2"><a href="/bookrec?id=' + book.id + '"><b>' + book.title + '</b><BR>' + book.author + '<BR><img width=120 src="' + book.cover + '"></a></div>';
 						}
 						$('#results').append(str);

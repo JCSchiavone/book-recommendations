@@ -8,6 +8,7 @@ from models import Book, Shelves, Categories
 @render_to('website/index.html')
 def index(request):
     data = request.GET.get('search')
+    print data
     if data:
         return {'search': data}
     else:
