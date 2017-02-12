@@ -13,7 +13,7 @@ def index(request):
 @render_to('website/bookrec.html')
 def bookrec(request):
     data = request.GET.get('id')
-    book = Book.objects.filter(book_id=data)
+    book = Book.objects.get(book_id=data)
     return {'book': book}
 
 def search_title(request):
