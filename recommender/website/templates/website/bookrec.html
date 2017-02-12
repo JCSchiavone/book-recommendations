@@ -24,7 +24,7 @@
 			<img src="{{ book.cover_url }}" width=280>	
 		</div>
 		<div class="col-md-7">
-			<div style="display: block; position: relative; height: 300px;">
+			<div style="display: block; position: relative; height: 350px;">
 				{% for tag in tags %}
 					<button class="tags flat-butt flat-danger-butt">{{ tag.shelf }}</button>
 				{% endfor %}
@@ -174,7 +174,7 @@
 					str += '<div style="display: block; height:80px; overflow-y: scroll"><i>';
 					str += book.desc;
 					
-					str += '</i></div>';
+					str += '</i></div><BR>';
 					str += '<a href="/bookrec?id=' + book.id + '"><button class="btn">Get recommendations based on this book</button></a>';
 					str += '</td></tr></table>';
 					
