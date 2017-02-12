@@ -174,7 +174,9 @@
 					str += '<div style="display: block; height:80px; overflow-y: scroll"><i>';
 					str += book.desc;
 					
-					str += '</i></div></td></tr></table>';
+					str += '</i></div>';
+					str += '<a href="/bookrec?id=' + book.id + '"><button class="btn">Get recommendations based on this book</button></a>';
+					str += '</td></tr></table>';
 					
 					
 					$('#summary').html(str);
