@@ -44,10 +44,10 @@ if args.books:
 if args.reviews:
     insert_data('reviews.tsv', 'insert into website_reviews (book_id_id, body, rating, url) values (%s, %s, %s, %s)', floats=[2])
 
-if arg.shelves:
+if args.shelves:
     insert_data('shelves.tsv', 'insert into website_shelves (book_id_id, shelf, people) values (%s, %s, %s)', ints=[2])
 
-if arg.categories:
+if args.categories:
     insert_data('categories.tsv', 'insert into website_categories (book_id_id, category) values (%s, %s)')
 
 db.close()
