@@ -12,7 +12,9 @@ def index(request):
 
 @render_to('website/bookrec.html')
 def bookrec(request):
-    return {}
+    data = request.GET.get('id')
+    book = Book.objects.filter(book_id=data)
+    return {'book': book}
 
 def search_title(request):
     data = request.POST.get('title')
@@ -20,4 +22,18 @@ def search_title(request):
     pos_titles = Book.objects.filter(book_title__icontains=data)
     pos_authors = Book.objects.filter(book_author__icontains=data)
     
-    return JsonResponse({})
+    res = []
+    
+    for book in pos_titles:
+        res.append({'title': book.book_title,
+                    'author': book.book_author,
+                    'cover': book.cover_url,
+                    'id': book.book_id})
+        
+    for book in pos_authors:
+        res.append({'title': book.book_title,
+                    'author': book.book_author,
+                    'cover': book.cover_url,
+                    'id': book.book_id})
+    
+    return JsonResponse({'res': res})

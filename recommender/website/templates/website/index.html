@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12" style="text-align: center; padding-top: 50px;">
-			<img src="/static/website/images/B-Splice-Logo.png">	
+		<div class="col-md-12" style="text-align: center; padding-top: 10px;">
+			<img src="/static/website/images/B-Splice-Logo.png" width=300>	
 		</div>
 	
 	</div>
@@ -21,11 +21,10 @@
 		</div>
 	</div>
 	
-	<div class="row" style="text-align: center;">
-		<div class="col-md-12">
-			
-		</div>
+	<div id="results">
+	
 		
+	</div>
 	</div>
 
 </div>
@@ -35,7 +34,7 @@
 {% block scripts %}
 <script>
 	
-	$('#submit-btn').click(function(e){
+	var search = function(e) {
 		var book = $('#booksearch').val();
 		
 		data = {'title': book,
@@ -46,13 +45,48 @@
 			url: '/search_title',
 			data: data,
 			success: function(res) {
+				console.log(res);
+				if (res.res) {
+					if (res.res.length == 0) {
+						$('#results').text('No results. Try another query!');
+					} else {
+						var str = '';
+						for (var i=0; i < res.res.length; i++) {
+							if ( i % 4 == 0) {
+								if (i != 0) {
+									str += '</div>';
+								}
+								str += '<div class="row" style="text-align: center;">';
+							}
+							var book = res.res[i];
+							str += '<div class="col-md-2"><a href="/bookrec?id=' + book.id + '"><b>' + book.title + '</b><BR>' + book.author + '<BR><img width=120 src="' + book.cover + '"></a></div>';
+						}
+						$('#results').append(str);
+					}
+				}
 			},
 			error: function(res) {
 				console.log(res);
 			}
 		});
+	};
+	
+	
+	
+	$('#submit-btn').click(function(e){
+		search(e);
 	});
-
+	
+	
+	$('input').bind("enterKey",function(e){
+	   search(e);
+	});
+	$('input').keyup(function(e){
+	    if(e.keyCode == 13)
+	    {
+	        $(this).trigger("enterKey");
+	    }
+	});
 	
 	
 </script>
