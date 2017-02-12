@@ -23,6 +23,7 @@ class Shelves(models.Model):
     book_id = models.ForeignKey('Book')
     shelf = models.CharField(max_length=200)
     people = models.IntegerField()
+    score = models.FloatField()
     
     def __unicode__(self):
         return self.shelf
