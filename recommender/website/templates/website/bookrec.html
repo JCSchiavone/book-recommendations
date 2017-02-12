@@ -125,9 +125,17 @@
 	  
 	var check_tags = function(id) {
 		
+		var wasSelected = false;
+		
+		if ($('#' + id).hasClass('book-selected')) {
+			wasSelected = true;
+		}
+		
 		clearSelected();
 		
-		if (!$('#' + id).hasClass('book-selected')) {
+		
+		
+		if (!wasSelected && !$('#' + id).hasClass('book-selected')) {
 			
 			
 			$('#' + id).addClass('book-selected');
